@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
-	beep "github.com/gen2brain/beeep"
+	ui "github.com/ncruces/zenity"
 )
 
 // On application start, constantly checks specified folder for new files/folders,
@@ -31,9 +32,18 @@ func filePath() {
 }
 
 func main() {
-	msg := fmt.Sprintf("Application has started successfully...\n") // File path in msg
-	err := beep.Alert(Application().name, msg, "path/to/icon")
-	if beep.ErrUnsupported != nil {
-		log.Fatal("Operating system not supported\n", err)
+	dir, err := os.UserHomeDir()
+	if err != nil {
+		dir = ``
+
+	}
+
+	path, err := ui.SelectFile(
+		ui.Filename(fmt.Sprintf(`%s\Downloads`, dir)),
+		ui.WindowIcon(`.\assets\RW.png`),
+		ui.Directory(),
+	)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
