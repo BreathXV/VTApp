@@ -2,6 +2,7 @@ package components
 
 // Checks the size of the file/folder
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -16,8 +17,9 @@ func CheckFileSize(path string) error {
 	}
 
 	if file.Size() < 32000000 {
+		msg := fmt.Sprintf("Processing file now...\n%s", file.Name())
+		ntfy.Notify("VTApp", msg, "path/to/icon")
 		return nil
-		ntfy.Notify()
 		// Reg File
 	} else if file.Size() > 32000000 && file.Size() < 650000000 {
 		return nil
@@ -26,5 +28,4 @@ func CheckFileSize(path string) error {
 		return nil
 		// Return + Fatal - file to large
 	}
-	return nil
 }
