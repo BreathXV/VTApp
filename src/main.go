@@ -12,9 +12,9 @@ type Application struct {
 
 func main() {
 	VTApp := Application{
-		name: "VTApp",
-		author: "BreathXV",
+		name:    "VTApp",
+		author:  "BreathXV",
 		license: "N/a",
-		version: "0.0.1"
+		version: 0.1,
 	}
 }
