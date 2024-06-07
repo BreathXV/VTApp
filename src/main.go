@@ -12,35 +12,15 @@ import (
 // On application start, constantly checks specified folder for new files/folders,
 // then parses them to check file size
 
-type ApplicationData struct {
-	name    string
-	author  string
-	license string
-	version string
-}
-
-func Application() ApplicationData {
-	return ApplicationData{
-		name:    "VTApp",
-		author:  "Breath",
-		license: "Na",
-		version: "0.0.1",
-	}
-}
-
-func filePath() {
-	// Find Downloads folder
-}
-
-func main() {
-	dir, err := os.UserHomeDir()
+func dirWindow() (path string) {
+	homeDir, err := os.UserHomeDir()
 	if err != nil {
-		dir = ``
-
+		cmp.ToastAlert()
+		log.Fatal("Cannot find home directory.")
 	}
 
-	path, err := ui.SelectFile(
-		ui.Filename(fmt.Sprintf(`%s\Downloads`, dir)),
+	path, err = ui.SelectFile(
+		ui.Filename(homeDir),
 		ui.WindowIcon(`.\assets\RW.png`),
 		ui.Directory(),
 	)
@@ -48,5 +28,16 @@ func main() {
 		log.Fatal(err)
 	}
 
-	cmp.DirWatcher(path)
+	return path
+}
+
+func main() {
+	dir, err := os.UserHomeDir()
+	if err != nil {
+		dir = dirWindow()
+		cmp.DirWatcher(dir)
+	} else {
+		path := fmt.Sprintf("%s\\Downloads", dir)
+		cmp.DirWatcher(path)
+	}
 }
