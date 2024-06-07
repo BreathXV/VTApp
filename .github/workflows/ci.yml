@@ -35,7 +35,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: VTApp
-                path: ./.../VTApp.exe
+                path: ./VTApp.exe
                 if-no-files-found: error
 
             - uses: "marvinpinto/action-automatic-releases@latest"
