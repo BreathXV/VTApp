@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	cmp "github.com/breathxv/vtapp/src/components"
 	ui "github.com/ncruces/zenity"
 )
 
@@ -46,4 +47,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	cmp.DirWatcher(path)
 }

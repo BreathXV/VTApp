@@ -6,14 +6,12 @@ import (
 	fs "github.com/fsnotify/fsnotify"
 )
 
-// TODO: Import fsnotify
-
-func DirWatcher(path string) (file_path string, err error) {
+func DirWatcher(path string) (err error) {
 	w, err := fs.NewWatcher()
 	if err != nil {
 		ToastAlert()
 		log.Print("Failed to create Watcher:", err)
-		return "", err
+		return err
 	}
 	defer w.Close()
 
@@ -26,7 +24,7 @@ func DirWatcher(path string) (file_path string, err error) {
 
 	log.Printf("ready; press ^C to exit")
 	<-make(chan struct{}) // Block forever
-	return "", nil
+	return nil
 }
 
 func watchLoop(w *fs.Watcher) {
@@ -35,21 +33,23 @@ func watchLoop(w *fs.Watcher) {
 		select {
 		// Read from Errors.
 		case err, ok := <-w.Errors:
-			if !ok { // Channel was closed (i.e. Watcher.Close() was called).
+			if !ok { // Watcher.Close() was called.
 				return
 			}
 			log.Printf("ERROR: %s", err)
 		// Read from Events.
 		case e, ok := <-w.Events:
-			if !ok { // Channel was closed (i.e. Watcher.Close() was called).
+			if !ok { // Watcher.Close() was called.
 				return
 			}
-
-			// Just print the event nicely aligned, and keep track how many
-			// events we've seen.
-			i++
-			log.Printf("%3d", i)
-			CheckFileSize(e.Name)
+			// Check for create event otherwise write event triggers multiple times
+			if e.Has(fs.Create) {
+				i++
+				log.Printf("%3d", i)
+				CheckFileSize(e.Name)
+			} else {
+				return
+			}
 		}
 	}
 }
