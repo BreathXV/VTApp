@@ -32,7 +32,9 @@ jobs:
               run: go build -v ./...
 
             - name: Check File Paths
-              run: ls
+              run: |
+                cd .\src
+                ls
 
             - name: Create Release
               uses: actions/upload-artifact@v4
