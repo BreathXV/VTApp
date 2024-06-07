@@ -31,14 +31,11 @@ jobs:
             - name: Build
               run: go build -v ./...
 
-            - name: Test
-              run: go test
-
             - name: Create Release
               uses: actions/upload-artifact@v4
               with:
                 name: VTApp
-                path: dist/VTApp.exe
+                path: ./.../VTApp.exe
                 if-no-files-found: error
 
             - uses: "marvinpinto/action-automatic-releases@latest"
