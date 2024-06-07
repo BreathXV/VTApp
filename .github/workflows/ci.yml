@@ -29,7 +29,7 @@ jobs:
                 go get .\src\handlers
 
             - name: Build
-              run: go build -v .\src
+              run: go build -o VTApp -v .\src
 
             - name: Check File Paths
               run: |
@@ -41,7 +41,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: VTApp
-                path: ./VTApp.exe
+                path: D:\a\VTApp\VTApp\VTApp.exe
                 if-no-files-found: error
 
             - uses: "marvinpinto/action-automatic-releases@latest"
