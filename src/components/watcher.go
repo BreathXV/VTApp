@@ -6,6 +6,8 @@ import (
 	fs "github.com/fsnotify/fsnotify"
 )
 
+var w *fs.Watcher
+
 func DirWatcher(path string) (err error) {
 	w, err := fs.NewWatcher()
 	if err != nil {
