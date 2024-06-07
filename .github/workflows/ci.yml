@@ -38,13 +38,7 @@ jobs:
                 ls
 
             - name: Create Release
-              uses: actions/upload-artifact@v4
-              with:
-                name: VTApp
-                path: D:\a\VTApp\VTApp\VTApp.exe
-                if-no-files-found: error
-
-            - uses: "marvinpinto/action-automatic-releases@latest"
+              uses: "marvinpinto/action-automatic-releases@latest"
               with:
                 repo_token: "${{ secrets.GITHUB_TOKEN }}"
                 automatic_release_tag: "latest"
