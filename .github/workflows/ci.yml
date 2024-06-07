@@ -51,4 +51,4 @@ jobs:
                 prerelease: true
                 title: "Unstable/Development Build"
                 files: |
-                    dist/VTApp.exe
+                    D:\a\VTApp\VTApp\VTApp.exe
