@@ -31,9 +31,11 @@ func DirectoryParse() {
 	dir, err := os.UserHomeDir()
 	if err != nil {
 		dir = DirWindow()
+		log.Print("Watched directory set to path:", dir)
 		DirWatcher(dir)
 	} else {
 		path := fmt.Sprintf("%s\\Downloads", dir)
+		log.Print("Watched directory set to path:", path)
 		DirWatcher(path)
 	}
 }
