@@ -9,6 +9,12 @@ import (
 	toast "github.com/gen2brain/beeep"
 )
 
+// Check file size takes a path (string) for a
+// file/zipped folder. It then checks the size
+// of the file and invokes the appropriate
+// handler (e.g. reg/large). It can return err
+// (error) which occurs when the function could
+// not complete successfully.
 func CheckFileSize(path string) error {
 	file, err := os.Stat(path)
 	if err != nil {
