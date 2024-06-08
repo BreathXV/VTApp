@@ -3,13 +3,21 @@ package components
 import (
 	"log"
 
+	"github.com/breathxv/vtapp/src/errors"
 	fs "github.com/fsnotify/fsnotify"
 )
 
+// TODO: Add better docs through function due to complexity
+// Dir watcher takes a path (string) and watches
+// that file/folder through the Windows Event
+// Manager. It triggers a (go) loop which reads
+// the events which then triggers the file checks.
+// It can return err (error) which occurs when the
+// function or, loop failed to operate successfully.
 func DirWatcher(path string) (err error) {
 	w, err := fs.NewWatcher()
 	if err != nil {
-		ToastAlert()
+		errors.ToastAlert()
 		log.Print("Failed to create Watcher:", err)
 		return err
 	}
