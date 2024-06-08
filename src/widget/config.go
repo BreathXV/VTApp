@@ -5,6 +5,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+// ? May be removed/fully re-worked
 func ConfigInterface() {
 	a := app.New()
 	w := a.NewWindow("VTApp")
