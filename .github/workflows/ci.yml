@@ -30,7 +30,7 @@ jobs:
                 go get .\src\handlers
 
             - name: Build
-              run: go build -o VTApp.exe -v .\src
+              run: go build -o VTApp_windows-x64.exe -v .\src
 
             - name: Check File Paths
               run: |
