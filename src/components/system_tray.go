@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	widget "github.com/breathxv/vtapp/src/widget"
 	"github.com/getlantern/systray"
 )
 
@@ -13,11 +14,9 @@ func OnReady() {
 		log.Fatal("Error reading file", err)
 	}
 	systray.SetIcon(bytes)
-	log.Print("Set icon.")
 	systray.SetTitle("VTApp")
-	log.Print("Set title.")
+	configWindow := systray.AddMenuItem("Config", "Open the configuration interface.")
 	quitProgram := systray.AddMenuItem("Quit", "Quit the application.")
-	log.Print("Add menu item: Quit")
 	// ! Fix error on attempted directory change
 	// changeDirectory := systray.AddMenuItem(
 	// 	"Directory",
@@ -27,9 +26,15 @@ func OnReady() {
 	// go func() {
 	// 	<-changeDirectory.ClickedCh
 	// 	log.Printf("User requested directory change...")
+
 	// 	log.Printf("Stop watcher...")
 	// 	DirectoryParse()
 	// }()
+	go func() {
+		<-configWindow.ClickedCh
+		log.Printf("User requested config interface...")
+		widget.ConfigInterface()
+	}()
 	go func() {
 		<-quitProgram.ClickedCh
 		log.Printf("User requested application quit...")
