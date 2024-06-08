@@ -1,0 +1,157 @@
+name: Build
+
+on:
+    push:
+        branches:
+        - master
+    pull_request:
+        branches:
+            - master
+
+jobs:
+    build_win:
+        name: Build VTApp Windows x64
+        runs-on: windows-latest
+
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Setup Go
+              uses: actions/setup-go@v5
+              with:
+                go-version: '1.22.3'
+            - run: go version
+
+            - name: Install Dependecies
+              run: |
+                go get .\src
+                go get .\src\components
+                go get .\src\handlers
+
+            - name: Build
+              run: GOARCH=amd64 GOOS=windows go build -o VTApp_windows-x64.exe -v .\src
+
+            - name: Check File Paths
+              run: |
+                ls
+                cd .\src
+                ls
+
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: VTApp_windows-x64
+                path: D:\a\VTApp\VTApp\VTApp_windows-x64.exe
+                if-no-files-found: error
+
+    build_mac:
+        name: Build VTApp MacOS x64
+        runs-on: windows-latest
+
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Setup Go
+              uses: actions/setup-go@v5
+              with:
+                go-version: '1.22.3'
+            - run: go version
+
+            - name: Install Dependecies
+              run: |
+                go get .\src
+                go get .\src\components
+                go get .\src\handlers
+
+            - name: Build
+              run: GOARCH=amd64 GOOS=darwin go build -o VTApp_darwin-x64.exe -v .\src
+
+            - name: Check File Paths
+              run: |
+                ls
+                cd .\src
+                ls
+
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: VTApp_darwin-x64
+                path: D:\a\VTApp\VTApp\VTApp_darwin-x64.exe
+                if-no-files-found: error
+
+    build_linux:
+      name: Build VTApp Linux x64
+      runs-on: windows-latest
+
+      steps:
+          - name: Checkout Code
+            uses: actions/checkout@v4
+
+          - name: Setup Go
+            uses: actions/setup-go@v5
+            with:
+              go-version: '1.22.3'
+          - run: go version
+
+          - name: Install Dependecies
+            run: |
+              go get .\src
+              go get .\src\components
+              go get .\src\handlers
+
+          - name: Build
+            run: GOARCH=amd64 GOOS=linux go build -o VTApp_linux-x64.exe -v .\src
+
+          - name: Check File Paths
+            run: |
+              ls
+              cd .\src
+              ls
+
+          - name: Upload Artifact
+            uses: actions/upload-artifact@v4
+            with:
+              name: VTApp_linux-x64
+              path: D:\a\VTApp\VTApp\VTApp_linux-x64.exe
+              if-no-files-found: error
+
+    release:
+        needs: [build_win, build_mac, build_linux]
+        name: Release VTApp (Unstable/Development Build)
+        runs-on: "ubuntu-latest"
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Download Windows artifact
+              uses: actions/download-artifact@v4
+              with:
+                name: VTApp_windows-x64
+                path: VTApp_windows-x64.zip/VTApp_windows-x64.exe
+
+            - name: Download Darwin artifact
+              uses: actions/download-artifact@v4
+              with:
+                name: VTApp_darwin-x64
+                path: VTApp_darwin-x64.zip/VTApp_darwin-x64.exe
+
+            - name: Download Linux artifact
+              uses: actions/download-artifact@v4
+              with:
+                name: VTApp_linux-x64
+                path: VTApp_linux-x64.zip/VTApp_linux-x64.exe
+
+            - name: "Build & test"
+              run: |
+                echo "done!"
+
+            - uses: "marvinpinto/action-automatic-releases@latest"
+              with:
+                repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                automatic_release_tag: "latest"
+                prerelease: true
+                title: "Development Build"
+                files: |
+                  VTApp_windows-x64.zip/VTApp_windows-x64.exe
