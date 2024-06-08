@@ -7,7 +7,7 @@ import (
 
 // On application start, constantly checks specified folder for new files/folders,
 // then parses them to check file size
-
+// TODO: Finish this ^
 func main() {
 	// TODO: Welcome screen on initial start
 	// Start directory selection
