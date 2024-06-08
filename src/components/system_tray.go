@@ -8,6 +8,9 @@ import (
 	"github.com/getlantern/systray"
 )
 
+// On ready defines the media, text and
+// functionality that is attached to the
+// system tray application icon.
 func OnReady() {
 	bytes, err := os.ReadFile("src\\assets\\VTApp.ico")
 	if err != nil {
@@ -17,7 +20,10 @@ func OnReady() {
 	systray.SetTitle("VTApp")
 	configWindow := systray.AddMenuItem("Config", "Open the configuration interface.")
 	quitProgram := systray.AddMenuItem("Quit", "Quit the application.")
-	// ! Fix error on attempted directory change
+	// ! Error on attempted directory change
+	// ! Possible cause is attempting to pull
+	// ! 'w' when it is in another thread.
+	// TODO: Fix error
 	// changeDirectory := systray.AddMenuItem(
 	// 	"Directory",
 	// 	"Change the directory the application detects from.",
@@ -43,6 +49,8 @@ func OnReady() {
 	}()
 }
 
+// On exit defines what's executed
+// when the application is quitted.
 func OnExit() {
 	log.Fatalf("Quit from system tray.")
 }
