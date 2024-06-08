@@ -20,10 +20,11 @@ func DirWatcher(path string) (err error) {
 	err = w.Add(path)
 	if err != nil {
 		log.Fatalf("%q: %s", path, err)
+		return err
 	}
 
 	log.Printf("ready; press ^C to exit")
-	<-make(chan struct{}) // Block forever
+	<-make(chan struct{}) // Block
 	return nil
 }
 
