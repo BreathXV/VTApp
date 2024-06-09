@@ -10,8 +10,6 @@ import (
 // TODO: Finish this ^
 func main() {
 	// TODO: Welcome screen on initial start
-	// Start directory selection
-	cmp.DirectoryParse()
 	// Start system tray
 	systray.Run(cmp.OnReady, cmp.OnExit)
 }
