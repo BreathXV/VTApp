@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/breathxv/vtapp/src/errors"
 	widget "github.com/breathxv/vtapp/src/widget"
 	"github.com/getlantern/systray"
 )
@@ -19,9 +20,12 @@ func OnReady() {
 	}
 	systray.SetIcon(bytes)
 	systray.SetTitle("VTApp")
-	configWindow := systray.AddMenuItem("Config", "Open the configuration interface.")
-	quitProgram := systray.AddMenuItem("Quit", "Quit the application.")
+	systray.SetTooltip("Intercepting downloads and scanning them...")
 	changeDirectory := systray.AddMenuItem("Directory", "Change the directory the application detects from.")
+	configWindow := systray.AddMenuItem("Config", "Open the configuration interface.")
+	stopProgram := systray.AddMenuItem("Stop", "Stops the application but keeps it in the tray.")
+	systray.AddSeparator()
+	quitProgram := systray.AddMenuItemCheckbox("Quit", "Quit the application.", false)
 	go func() {
 		<-changeDirectory.ClickedCh
 
@@ -36,7 +40,20 @@ func OnReady() {
 		log.Printf("User requested config interface...")
 		widget.ConfigInterface()
 	}()
-	systray.AddSeparator()
+	go func() {
+		<-stopProgram.ClickedCh
+		if quitProgram.Checked() {
+			for _, element := range w.WatchList() {
+				err = w.Remove(element)
+				if err != nil {
+					log.Printf("Error removing path from event watcher.")
+					errors.ToastAlert()
+				}
+			}
+		} else {
+			AdjustDirectory()
+		}
+	}()
 	go func() {
 		<-quitProgram.ClickedCh
 
