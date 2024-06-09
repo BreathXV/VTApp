@@ -30,7 +30,7 @@ jobs:
                 go get .\src\handlers
 
             - name: Build
-              run: GOARCH=amd64 GOOS=windows go build -o VTApp_windows-x64.exe -v .\src
+              run: go build -o VTApp_windows-x64.exe -v .\src
 
             - name: Check File Paths
               run: |
@@ -47,7 +47,7 @@ jobs:
 
     build_mac:
         name: Build VTApp MacOS x64
-        runs-on: windows-latest
+        runs-on: macos-12
 
         steps:
             - name: Checkout Code
@@ -66,7 +66,7 @@ jobs:
                 go get .\src\handlers
 
             - name: Build
-              run: GOARCH=amd64 GOOS=darwin go build -o VTApp_darwin-x64.exe -v .\src
+              run: go build -o VTApp_darwin-x64.dmg -v .\src
 
             - name: Check File Paths
               run: |
@@ -78,12 +78,12 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: VTApp_darwin-x64
-                path: D:\a\VTApp\VTApp\VTApp_darwin-x64.exe
+                path: D:\a\VTApp\VTApp\VTApp_darwin-x64.dmg
                 if-no-files-found: error
 
     build_linux:
       name: Build VTApp Linux x64
-      runs-on: windows-latest
+      runs-on: ubuntu-latest
 
       steps:
           - name: Checkout Code
@@ -102,7 +102,7 @@ jobs:
               go get .\src\handlers
 
           - name: Build
-            run: GOARCH=amd64 GOOS=linux go build -o VTApp_linux-x64.exe -v .\src
+            run: go build -o VTApp_linux-x64.bin -v .\src
 
           - name: Check File Paths
             run: |
@@ -114,7 +114,7 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
               name: VTApp_linux-x64
-              path: D:\a\VTApp\VTApp\VTApp_linux-x64.exe
+              path: D:\a\VTApp\VTApp\VTApp_linux-x64.bin
               if-no-files-found: error
 
     release:
@@ -135,13 +135,13 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                 name: VTApp_darwin-x64
-                path: VTApp_darwin-x64.zip/VTApp_darwin-x64.exe
+                path: VTApp_darwin-x64.zip/VTApp_darwin-x64.dmg
 
             - name: Download Linux artifact
               uses: actions/download-artifact@v4
               with:
                 name: VTApp_linux-x64
-                path: VTApp_linux-x64.zip/VTApp_linux-x64.exe
+                path: VTApp_linux-x64.zip/VTApp_linux-x64.bin
 
             - name: "Build & test"
               run: |
@@ -155,3 +155,5 @@ jobs:
                 title: "Development Build"
                 files: |
                   VTApp_windows-x64.zip/VTApp_windows-x64.exe
+                  VTApp_linux-x64.zip/VTApp_linux-x64.bin
+                  VTApp_darwin-x64.zip/VTApp_darwin-x64.dmg
