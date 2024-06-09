@@ -45,80 +45,80 @@ jobs:
                 path: D:\a\VTApp\VTApp\VTApp_windows-x64.exe
                 if-no-files-found: error
 
-    build_mac:
-        name: Build VTApp MacOS x64
-        runs-on: macos-12
+    # build_mac:
+    #     name: Build VTApp MacOS x64
+    #     runs-on: macos-12
 
-        steps:
-            - name: Checkout Code
-              uses: actions/checkout@v4
+    #     steps:
+    #         - name: Checkout Code
+    #           uses: actions/checkout@v4
 
-            - name: Setup Go
-              uses: actions/setup-go@v5
-              with:
-                go-version: '1.22.3'
-            - run: go version
+    #         - name: Setup Go
+    #           uses: actions/setup-go@v5
+    #           with:
+    #             go-version: '1.22.3'
+    #         - run: go version
 
-            - name: Install Dependecies
-              run: |
-                go get ./src
-                go get ./src/components
-                go get ./src/handlers
+    #         - name: Install Dependecies
+    #           run: |
+    #             go get ./src
+    #             go get ./src/components
+    #             go get ./src/handlers
 
-            - name: Build
-              run: go build -o VTApp_darwin-x64.dmg -v ./src
+    #         - name: Build
+    #           run: go build -o VTApp_darwin-x64.dmg -v ./src
 
-            - name: Check File Paths
-              run: |
-                ls
-                cd ./src
-                ls
+    #         - name: Check File Paths
+    #           run: |
+    #             ls
+    #             cd ./src
+    #             ls
 
-            - name: Upload Artifact
-              uses: actions/upload-artifact@v4
-              with:
-                name: VTApp_darwin-x64
-                path: D:/a/VTApp/VTApp/VTApp_darwin-x64.dmg
-                if-no-files-found: error
+    #         - name: Upload Artifact
+    #           uses: actions/upload-artifact@v4
+    #           with:
+    #             name: VTApp_darwin-x64
+    #             path: D:/a/VTApp/VTApp/VTApp_darwin-x64.dmg
+    #             if-no-files-found: error
 
-    build_linux:
-      name: Build VTApp Linux x64
-      runs-on: ubuntu-latest
+    # build_linux:
+    #   name: Build VTApp Linux x64
+    #   runs-on: ubuntu-latest
 
-      steps:
-          - name: Checkout Code
-            uses: actions/checkout@v4
+    #   steps:
+    #       - name: Checkout Code
+    #         uses: actions/checkout@v4
 
-          - name: Setup Go
-            uses: actions/setup-go@v5
-            with:
-              go-version: '1.22.3'
-          - run: go version
+    #       - name: Setup Go
+    #         uses: actions/setup-go@v5
+    #         with:
+    #           go-version: '1.22.3'
+    #       - run: go version
 
-          - name: Install Dependecies
-            run: |
-              go get ./src
-              go get ./src/components
-              go get ./src/handlers
+    #       - name: Install Dependecies
+    #         run: |
+    #           go get ./src
+    #           go get ./src/components
+    #           go get ./src/handlers
 
-          - name: Build
-            run: go build -o VTApp_linux-x64.bin -v ./src
+    #       - name: Build
+    #         run: go build -o VTApp_linux-x64.bin -v ./src
 
-          - name: Check File Paths
-            run: |
-              ls
-              cd ./src
-              ls
+    #       - name: Check File Paths
+    #         run: |
+    #           ls
+    #           cd ./src
+    #           ls
 
-          - name: Upload Artifact
-            uses: actions/upload-artifact@v4
-            with:
-              name: VTApp_linux-x64
-              path: D:/a/VTApp/VTApp/VTApp_linux-x64.bin
-              if-no-files-found: error
+    #       - name: Upload Artifact
+    #         uses: actions/upload-artifact@v4
+    #         with:
+    #           name: VTApp_linux-x64
+    #           path: D:/a/VTApp/VTApp/VTApp_linux-x64.bin
+    #           if-no-files-found: error
 
     release:
-        needs: [build_win, build_mac, build_linux]
+        needs: [build_win]
         name: Release VTApp (Unstable/Development Build)
         runs-on: "ubuntu-latest"
 
@@ -131,17 +131,17 @@ jobs:
                 name: VTApp_windows-x64
                 path: VTApp_windows-x64.zip/VTApp_windows-x64.exe
 
-            - name: Download Darwin artifact
-              uses: actions/download-artifact@v4
-              with:
-                name: VTApp_darwin-x64
-                path: VTApp_darwin-x64.zip/VTApp_darwin-x64.dmg
+            # - name: Download Darwin artifact
+            #   uses: actions/download-artifact@v4
+            #   with:
+            #     name: VTApp_darwin-x64
+            #     path: VTApp_darwin-x64.zip/VTApp_darwin-x64.dmg
 
-            - name: Download Linux artifact
-              uses: actions/download-artifact@v4
-              with:
-                name: VTApp_linux-x64
-                path: VTApp_linux-x64.zip/VTApp_linux-x64.bin
+            # - name: Download Linux artifact
+            #   uses: actions/download-artifact@v4
+            #   with:
+            #     name: VTApp_linux-x64
+            #     path: VTApp_linux-x64.zip/VTApp_linux-x64.bin
 
             - name: "Build & test"
               run: |
@@ -155,5 +155,3 @@ jobs:
                 title: "Development Build"
                 files: |
                   VTApp_windows-x64.zip/VTApp_windows-x64.exe
-                  VTApp_linux-x64.zip/VTApp_linux-x64.bin
-                  VTApp_darwin-x64.zip/VTApp_darwin-x64.dmg
