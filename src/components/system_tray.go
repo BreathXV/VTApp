@@ -24,6 +24,7 @@ func OnReady() {
 	systray.SetTooltip("Intercepting downloads and scanning them...")
 
 	changeDirectory := systray.AddMenuItem("Directory", "Change the directory the application detects from.")
+	changeDirectory.SetTooltip(set_directory)
 	configWindow := systray.AddMenuItem("Config", "Open the configuration interface.")
 	stopProgram := systray.AddMenuItem("Stop", "Stops the application but keeps it in the tray.")
 	systray.AddSeparator()
