@@ -3,6 +3,7 @@ package components
 import (
 	"log"
 	"os"
+	"path/filepath"
 
 	widget "github.com/breathxv/vtapp/src/widget"
 	"github.com/getlantern/systray"
@@ -12,7 +13,8 @@ import (
 // functionality that is attached to the
 // system tray application icon.
 func OnReady() {
-	bytes, err := os.ReadFile("src\\assets\\VTApp.ico")
+	go DirectoryParse()
+	bytes, err := os.ReadFile(filepath.Join("src", "assets", "VTApp.ico"))
 	if err != nil {
 		log.Fatal("Error reading file", err)
 	}
@@ -24,18 +26,18 @@ func OnReady() {
 	// ! Possible cause is attempting to pull
 	// ! 'w' when it is in another thread.
 	// TODO: Fix error
-	// changeDirectory := systray.AddMenuItem(
-	// 	"Directory",
-	// 	"Change the directory the application detects from.",
-	// )
-	// log.Print("Added menu item: Directory")
-	// go func() {
-	// 	<-changeDirectory.ClickedCh
-	// 	log.Printf("User requested directory change...")
-
-	// 	log.Printf("Stop watcher...")
-	// 	DirectoryParse()
-	// }()
+	changeDirectory := systray.AddMenuItem(
+		"Directory",
+		"Change the directory the application detects from.",
+	)
+	log.Print("Added menu item: Directory")
+	go func() {
+		<-changeDirectory.ClickedCh
+		log.Printf("User requested directory change...")
+		w.Remove(set_directory)
+		log.Printf("Stop watcher...")
+		DirectoryParse()
+	}()
 	go func() {
 		<-configWindow.ClickedCh
 		log.Printf("User requested config interface...")
