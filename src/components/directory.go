@@ -13,8 +13,8 @@ var (
 )
 
 func AdjustDirectory() {
-	dir := widget.DirWindow()
-	w.Add(dir)
+	set_directory = widget.DirWindow()
+	w.Add(set_directory)
 }
 
 // TODO: Add a check that the program defined path is correct.
