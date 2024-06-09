@@ -20,8 +20,7 @@ var (
 	)
 )
 
-
-// Parse files takes a file or folder and hands it over to the Virus Total API 
+// Parse files takes a file or folder and hands it over to the Virus Total API
 // for scanning. It takes one argument, path (string) and returns err (error).
 // Path should be the location of the folder/file that is to be scanned.
 // The folder cannot be a directory, it must be zipped before passing to the
@@ -60,5 +59,5 @@ func ParseFile(path string) (err error) {
 		)
 	}
 
-	results.
+	results.ID()
 }

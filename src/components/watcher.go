@@ -7,6 +7,10 @@ import (
 	fs "github.com/fsnotify/fsnotify"
 )
 
+var (
+	w *fs.Watcher
+)
+
 // TODO: Add better docs through function due to complexity
 // Dir watcher takes a path (string) and watches
 // that file/folder through the Windows Event

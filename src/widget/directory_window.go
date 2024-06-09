@@ -3,6 +3,7 @@ package widget
 import (
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/breathxv/vtapp/src/errors"
 	ui "github.com/ncruces/zenity"
@@ -18,7 +19,7 @@ func DirWindow() (path string) {
 
 	path, err = ui.SelectFile(
 		ui.Filename(homeDir),
-		ui.WindowIcon(`.\assets\VTApp.ico`),
+		ui.WindowIcon(filepath.Join("src", "assets", "VTApp.ico")),
 		ui.Directory(),
 	)
 	if err != nil {

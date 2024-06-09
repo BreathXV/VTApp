@@ -1,11 +1,15 @@
 package components
 
 import (
-	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	widget "github.com/breathxv/vtapp/src/widget"
+)
+
+var (
+	set_directory string
 )
 
 // TODO: Add a check that the program defined path is correct.
@@ -21,10 +25,12 @@ func DirectoryParse() {
 	if err != nil {
 		dir = widget.DirWindow()
 		log.Print("Watched directory set to path:", dir)
+		set_directory = dir
 		DirWatcher(dir)
 	} else {
-		path := fmt.Sprintf("%s\\Downloads", dir)
+		path := filepath.Join(dir, "Downloads")
 		log.Print("Watched directory set to path:", path)
+		set_directory = path
 		DirWatcher(path)
 	}
 }
