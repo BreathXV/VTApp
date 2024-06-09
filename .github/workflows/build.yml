@@ -61,24 +61,24 @@ jobs:
 
             - name: Install Dependecies
               run: |
-                go get .\src
-                go get .\src\components
-                go get .\src\handlers
+                go get ./src
+                go get ./src/components
+                go get ./src/handlers
 
             - name: Build
-              run: go build -o VTApp_darwin-x64.dmg -v .\src
+              run: go build -o VTApp_darwin-x64.dmg -v ./src
 
             - name: Check File Paths
               run: |
                 ls
-                cd .\src
+                cd ./src
                 ls
 
             - name: Upload Artifact
               uses: actions/upload-artifact@v4
               with:
                 name: VTApp_darwin-x64
-                path: D:\a\VTApp\VTApp\VTApp_darwin-x64.dmg
+                path: D:/a/VTApp/VTApp/VTApp_darwin-x64.dmg
                 if-no-files-found: error
 
     build_linux:
@@ -97,24 +97,24 @@ jobs:
 
           - name: Install Dependecies
             run: |
-              go get .\src
-              go get .\src\components
-              go get .\src\handlers
+              go get ./src
+              go get ./src/components
+              go get ./src/handlers
 
           - name: Build
-            run: go build -o VTApp_linux-x64.bin -v .\src
+            run: go build -o VTApp_linux-x64.bin -v ./src
 
           - name: Check File Paths
             run: |
               ls
-              cd .\src
+              cd ./src
               ls
 
           - name: Upload Artifact
             uses: actions/upload-artifact@v4
             with:
               name: VTApp_linux-x64
-              path: D:\a\VTApp\VTApp\VTApp_linux-x64.bin
+              path: D:/a/VTApp/VTApp/VTApp_linux-x64.bin
               if-no-files-found: error
 
     release:
