@@ -9,7 +9,6 @@ import (
 	ui "github.com/ncruces/zenity"
 )
 
-// ! Doesn't work in system tray
 func DirWindow() (path string) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
