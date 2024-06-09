@@ -12,6 +12,11 @@ var (
 	set_directory string
 )
 
+func AdjustDirectory() {
+	dir := widget.DirWindow()
+	w.Add(dir)
+}
+
 // TODO: Add a check that the program defined path is correct.
 // Directory Parse attempts to assign the users download path.
 // It does this by first checking if their home directory exists,
