@@ -22,10 +22,6 @@ func OnReady() {
 	systray.SetTitle("VTApp")
 	configWindow := systray.AddMenuItem("Config", "Open the configuration interface.")
 	quitProgram := systray.AddMenuItem("Quit", "Quit the application.")
-	// ! Error on attempted directory change
-	// ! Possible cause is attempting to pull
-	// ! 'w' when it is in another thread.
-	// TODO: Fix error
 	changeDirectory := systray.AddMenuItem(
 		"Directory",
 		"Change the directory the application detects from.",
@@ -36,7 +32,7 @@ func OnReady() {
 		log.Printf("User requested directory change...")
 		w.Remove(set_directory)
 		log.Printf("Stop watcher...")
-		DirectoryParse()
+		AdjustDirectory()
 	}()
 	go func() {
 		<-configWindow.ClickedCh
