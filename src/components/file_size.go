@@ -31,7 +31,7 @@ func CheckFileSize(path string) error {
 		return nil
 		// Large File
 	} else {
-		err := "File to large to process!"
+		err := "file to large to process"
 		toast.Alert("VTApp", "File to large to process!", "path/to/icon")
 		return fmt.Errorf(err)
 		// Return + Fatal - file to large
