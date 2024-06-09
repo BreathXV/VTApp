@@ -19,7 +19,7 @@ var (
 // It can return err (error) which occurs when the
 // function or, loop failed to operate successfully.
 func DirWatcher(path string) (err error) {
-	w, err := fs.NewWatcher()
+	w, err = fs.NewWatcher()
 	if err != nil {
 		errors.ToastAlert()
 		log.Print("Failed to create Watcher:", err)
