@@ -4,7 +4,9 @@ package handlers
 
 import (
 	"flag"
+	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/VirusTotal/vt-go"
 	"github.com/breathxv/vtapp/src/errors"
@@ -45,7 +47,7 @@ func ParseFile(path string) (err error) {
 	if err != nil {
 		errors.ToastAlert()
 	}
-	fileName := file.Name()
+	fmt.Print(file.Name())
 
 	results, err := client.NewFileScanner().ScanFile(
 		filePointer,
@@ -55,9 +57,10 @@ func ParseFile(path string) (err error) {
 		beeep.Alert(
 			"VTApp",
 			"Failed to send files to be scanned!",
-			"src\\assets\\VTApp.ico",
+			filepath.Join("src", "assets", "VTApp.ico"),
 		)
 	}
 
-	results.ID()
+	fmt.Print(results.Attributes())
+	return nil
 }
