@@ -18,14 +18,17 @@ func OnReady() {
 	if err != nil {
 		log.Fatal("Error reading file", err)
 	}
+
 	systray.SetIcon(bytes)
 	systray.SetTitle("VTApp")
 	systray.SetTooltip("Intercepting downloads and scanning them...")
+
 	changeDirectory := systray.AddMenuItem("Directory", "Change the directory the application detects from.")
 	configWindow := systray.AddMenuItem("Config", "Open the configuration interface.")
 	stopProgram := systray.AddMenuItem("Stop", "Stops the application but keeps it in the tray.")
 	systray.AddSeparator()
 	quitProgram := systray.AddMenuItemCheckbox("Quit", "Quit the application.", false)
+
 	go func() {
 		<-changeDirectory.ClickedCh
 
@@ -41,17 +44,30 @@ func OnReady() {
 		widget.ConfigInterface()
 	}()
 	go func() {
+		// Proceeds only if the stop item was clicked.
 		<-stopProgram.ClickedCh
-		if quitProgram.Checked() {
+		if !stopProgram.Checked() {
 			for _, element := range w.WatchList() {
+				// Removes element from watcher path list.
 				err = w.Remove(element)
 				if err != nil {
 					log.Printf("Error removing path from event watcher.")
 					errors.ToastAlert()
 				}
 			}
-		} else {
+			systray.SetTooltip("Stopped")
+			// Changes the item to have a check
+			stopProgram.Check()
+		}
+	}()
+	go func() {
+		<-stopProgram.ClickedCh
+		if stopProgram.Checked() {
+			// Calls to the directory window to re-select a directory.
 			AdjustDirectory()
+			systray.SetTooltip("Intercepting downloads and scanning them...")
+			// Unchecks the menu item.
+			stopProgram.Uncheck()
 		}
 	}()
 	go func() {
