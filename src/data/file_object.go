@@ -42,15 +42,15 @@ type FileReportStructure struct {
 			Downloadable        bool `json:"downloadable"`
 			FirstSubmissionDate int  `json:"first_submission_date"`
 			LastAnalysisDate    int  `json:"last_analysis_date"`
-			LastAnalysisResults []struct {
-				EngineNameType map[string]struct {
+			LastAnalysisResults map[struct]interface {
+				EngineNameType []string {
 					Category      string `json:"category"`
 					EngineName    string `json:"engine_name"`
 					EngineUpdate  string `json:"engine_update"`
 					EngineVersion string `json:"engine_version"`
 					Method        string `json:"method"`
 					Result        string `json:"result"`
-				}
+				} `json:unknown_field`
 			} `json:"last_analysis_results"`
 			LastAnalysisStats struct {
 				ConfirmedTimeout int `json:"confirmed-timeout"`
