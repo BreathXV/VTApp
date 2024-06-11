@@ -42,37 +42,17 @@ type FileReportStructure struct {
 			Downloadable        bool `json:"downloadable"`
 			FirstSubmissionDate int  `json:"first_submission_date"`
 			LastAnalysisDate    int  `json:"last_analysis_date"`
-<<<<<<< HEAD
 			LastAnalysisResults []struct {
-				EngineNameType struct {
-=======
-			LastAnalysisResults map[struct]interface {
-				EngineNameType []string {
->>>>>>> 98a400bed8698fbf2bf13de095957382c9265f5a
+				EngineNameType []struct {
 					Category      string `json:"category"`
 					EngineName    string `json:"engine_name"`
 					EngineUpdate  string `json:"engine_update"`
 					EngineVersion string `json:"engine_version"`
 					Method        string `json:"method"`
 					Result        string `json:"result"`
-<<<<<<< HEAD
 				} `json:""` // Unknown key name
 			} `json:""` // Unknown key name
 			LastAnalysisStats    struct{} `json:"last_analysis_stats"`
-=======
-				} `json:unknown_field`
-			} `json:"last_analysis_results"`
-			LastAnalysisStats struct {
-				ConfirmedTimeout int `json:"confirmed-timeout"`
-				Failure          int `json:"failure"`
-				Harmless         int `json:"harmless"`
-				Malicious        int `json:"malicious"`
-				Suspicious       int `json:"suspicious"`
-				Timeout          int `json:"timeout"`
-				TypeUnsupported  int `json:"type-unsupported"`
-				Undetected       int `json:"undetected"`
-			} `json:"last_analysis_stats"`
->>>>>>> 98a400bed8698fbf2bf13de095957382c9265f5a
 			LastModificationDate int      `json:"last_modification_date"`
 			LastSubmissionDate   int      `json:"last_submission_date"`
 			Md5                  string   `json:"md5"`
