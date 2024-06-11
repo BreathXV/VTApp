@@ -7,6 +7,7 @@ import (
 
 	"github.com/breathxv/vtapp/src/errors"
 	widget "github.com/breathxv/vtapp/src/widget"
+	"github.com/gen2brain/beeep"
 	"github.com/getlantern/systray"
 )
 
@@ -26,8 +27,10 @@ func OnReady() {
 	changeDirectory := systray.AddMenuItem("Directory", "Change the directory the application detects from.")
 	changeDirectory.SetTooltip(set_directory)
 	configWindow := systray.AddMenuItem("Config", "Open the configuration interface.")
-	stopProgram := systray.AddMenuItem("Stop", "Stops the application but keeps it in the tray.")
 	systray.AddSeparator()
+	profileBuilder := systray.AddMenuItem("Create Profile", "Use the profile builder to create a profile.")
+	systray.AddSeparator()
+	stopProgram := systray.AddMenuItem("Stop", "Stops the application but keeps it in the tray.")
 	quitProgram := systray.AddMenuItemCheckbox("Quit", "Quit the application.", false)
 
 	go func() {
@@ -42,7 +45,13 @@ func OnReady() {
 		<-configWindow.ClickedCh
 
 		log.Printf("User requested config interface...")
-		widget.ConfigInterface()
+		// ! Remove toast below when feature fixed
+		beeep.Alert(
+			"VTApp",
+			"This feature is not available currently.",
+			filepath.Join("src", "assets", "VTApp.ico"),
+		)
+		// widget.ConfigInterface()
 	}()
 	go func() {
 		// Proceeds only if the stop item was clicked.
@@ -60,6 +69,11 @@ func OnReady() {
 			// Changes the item to have a check
 			stopProgram.Check()
 		}
+	}()
+	go func() {
+		<-profileBuilder.ClickedCh
+		log.Printf("User requested profile builder...")
+		widget.CreateProfile()
 	}()
 	go func() {
 		<-stopProgram.ClickedCh
