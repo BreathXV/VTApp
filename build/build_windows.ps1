@@ -1,6 +1,6 @@
 Write-Host -Object "Build VTApp" -BackgroundColor Blue -ForegroundColor White
 
-$Source = "/src/main.go"
-$Output = "/build/VTApp.exe"
+$Source = "..\VTApp\src\main.go"
+$Output = "..\VTApp\build\VTApp.exe"
 
-go build -o $Source -v $Output
+go build -o $Output -v $Source
