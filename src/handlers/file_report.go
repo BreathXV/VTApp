@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
 	"path/filepath"
 
@@ -36,5 +36,14 @@ func GetFileReport(file_hash string) (fileReport data.FileReportStructure) {
 	// TODO: Body as JSON
 	// fileReport, err = io.ReadAll(res.Body)
 
-	fmt.Println(string(body))
+	decoder := json.NewDecoder(req.Body)
+	err = decoder.Decode(&fileReport)
+	if err != nil {
+		beeep.Alert(
+			"VTApp",
+			"Failed to decode received file report from Virus Total.",
+			filepath.Join("src", "assets", "VTApp.ico"),
+		)
+	}
+	return fileReport
 }
