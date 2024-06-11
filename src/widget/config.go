@@ -1,15 +1,33 @@
 package widget
 
+// #cgo LDFLAGS: -L. -llibrary
+// #include "D:\repos\VTApp\interface\interface_config_bridge.h"
+import "C"
 import (
-	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/widget"
+	"fmt"
+	"unsafe"
 )
 
-// ? May be removed/fully re-worked
-func ConfigInterface() {
-	a := app.New()
-	w := a.NewWindow("VTApp")
+type Foo struct {
+	ptr unsafe.Pointer
+}
 
-	w.SetContent(widget.NewLabel("Hello World!"))
-	w.ShowAndRun()
+func NewFoo(value int) Foo {
+	var foo Foo
+	foo.ptr = C.LIB_NewFoo(C.int(value))
+	return foo
+}
+
+func (foo Foo) Free() {
+	C.LIB_DestroyFoo(foo.ptr)
+}
+
+func (foo Foo) value() int {
+	return int(C.LIB_FooValue(foo.ptr))
+}
+
+func main() {
+	foo := NewFoo(42)
+	defer foo.Free() // The Go analog to C++'s RAII
+	fmt.Println("[go]", foo.value())
 }
